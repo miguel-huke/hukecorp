@@ -72,11 +72,13 @@
             width: 100%;
             height: 400px;
             background: #2a2a2a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #666;
+            overflow: hidden;
+        }
+
+        .carousel-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .carousel-content {
@@ -206,6 +208,33 @@
             font-size: 14px;
         }
 
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .tech-item {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            border: 2px solid #333;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .tech-item:hover {
+            border-color: #4ade80;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.2);
+        }
+
         @media (max-width: 768px) {
             .carousel-image {
                 height: 250px;
@@ -241,7 +270,9 @@
             
             <div class="carousel-container" id="carouselContainer">
                 <div class="carousel-item">
-                    <img src="./erp.jpg" alt="Projeto 1" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="carousel-image">
+                        <img src="./erp.jpg" alt="Sistema de Gestão Empresarial">
+                    </div>
                     <div class="carousel-content">
                         <h3>Sistema de Gestão Empresarial</h3>
                         <p>Desenvolvimento completo de ERP customizado para indústria, incluindo módulos de estoque, vendas e financeiro.</p>
@@ -249,16 +280,19 @@
                 </div>
                 
                 <div class="carousel-item">
-                    <img src="./grow.jpg" alt="Projeto 2" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="carousel-image">
+                        <img src="./grow.jpg" alt="Grow Automático">
+                    </div>
                     <div class="carousel-content">
-                        
                         <h3>Grow Automático com Webserver e Aplicativo Mobile</h3>
                         <p>Sistema com integração hardware e firmware para monitoramento em tempo real de equipamentos de cultivo indoor.</p>
                     </div>
                 </div>
                 
                 <div class="carousel-item">
-                    <img src="./uraatendimento.jpg" alt="Projeto 3" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="carousel-image">
+                        <img src="./uraatendimento.jpg" alt="URA de Atendimento">
+                    </div>
                     <div class="carousel-content">
                         <h3>URA de Atendimento Automático para Operador</h3>
                         <p>Robô URA com servidor Asterisk para números VoIP que ligam para uma lista de clientes e repassa a linha para operador.</p>
@@ -266,7 +300,9 @@
                 </div>
                 
                 <div class="carousel-item">
-                    <img src="./identidadevisual.jpg" alt="Projeto 1" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="carousel-image">
+                        <img src="./identidadevisual.jpg" alt="Identidade Visual">
+                    </div>
                     <div class="carousel-content">
                         <h3>Identidade Visual Tech Startup</h3>
                         <p>Criação completa de marca, logo, paleta de cores e materiais gráficos para startup de tecnologia.</p>
@@ -275,6 +311,15 @@
             </div>
             
             <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+
+        <h2>Tecnologias</h2>
+        
+        <div class="tech-stack">
+            <div class="tech-item">Assembly</div>
+            <div class="tech-item">C</div>
+            <div class="tech-item">C++</div>
+            <div class="tech-item">C#</div>
         </div>
 
         <h2>Serviços</h2>
