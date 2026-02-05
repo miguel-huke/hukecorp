@@ -1,406 +1,647 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUKE - Portfolio</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HUKE - Terminal Corporativo</title>
+  <meta name="description" content="HUKE: operações, serviços e comunidade com interface minimalista." />
+  <style>
+    :root {
+      --bg: #000000;
+      --fg: #ffffff;
+      --muted: #a6a6a6;
+      --line: #1b1b1b;
+      --accent: #00ffd0;
+      --accent-2: #77a7ff;
+      --shadow: rgba(0, 0, 0, 0.6);
+      --panel: #0b0b0b;
+      --panel-2: #0f0f0f;
+      --radius: 16px;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background: #0a0a0a;
-            color: #ffffff;
-            line-height: 1.6;
-        }
+    * { box-sizing: border-box; }
 
-        header {
-            background: #000;
-            padding: 20px 0;
-            border-bottom: 1px solid #222;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: Consolas, "Lucida Console", "Courier New", monospace;
+      line-height: 1.55;
+      scroll-behavior: smooth;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+    body {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background-image:
+        radial-gradient(900px 420px at 10% 0%, rgba(0, 255, 208, 0.08), transparent 65%),
+        radial-gradient(600px 420px at 90% 10%, rgba(119, 167, 255, 0.1), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,0.03), transparent 160px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 24px);
+    }
 
-        .logo {
-            width: 150px;
-            height: auto;
-        }
+    a { color: inherit; text-decoration: none; }
 
-        h1, h2 {
-            margin-bottom: 30px;
-        }
+    .container {
+      width: min(1200px, 92vw);
+      margin: 0 auto;
+    }
 
-        h2 {
-            font-size: 32px;
-            text-align: center;
-            margin-top: 80px;
-        }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.78);
+      border-bottom: 1px solid var(--line);
+    }
 
-        .carousel {
-            position: relative;
-            max-width: 900px;
-            margin: 50px auto;
-            overflow: hidden;
-            border-radius: 12px;
-        }
+    .nav {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 0;
+    }
 
-        .carousel-container {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 14px;
+    }
 
-        .carousel-item {
-            min-width: 100%;
-            background: #1a1a1a;
-            border-radius: 12px;
-            overflow: hidden;
-        }
+    .brand-badge {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 16px rgba(0, 255, 208, 0.5);
+    }
 
-        .carousel-image {
-            width: 100%;
-            height: 400px;
-            background: #2a2a2a;
-            overflow: hidden;
-        }
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
 
-        .carousel-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+    .nav-links button {
+      padding: 7px 14px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      transition: all 180ms ease;
+      border-radius: 999px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 11px;
+      background: rgba(255,255,255,0.02);
+      cursor: pointer;
+    }
 
-        .carousel-content {
-            padding: 30px;
-        }
+    .nav-links button:hover,
+    .nav-links button[aria-current="true"] {
+      color: var(--fg);
+      border-color: var(--accent);
+      box-shadow: 0 0 18px rgba(0,255,208,0.18);
+    }
 
-        .carousel-content h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
+    main {
+      padding: 28px 0 40px;
+    }
 
-        .carousel-content p {
-            color: #aaa;
-            font-size: 16px;
-        }
+    .page {
+      padding: 10px 0 40px;
+    }
 
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: white;
-            font-size: 30px;
-            padding: 15px 20px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
+    .page-head {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
 
-        .carousel-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
+    .page-eyebrow {
+      color: var(--accent-2);
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
 
-        .carousel-btn.prev {
-            left: 20px;
-        }
+    .page-title {
+      margin: 0;
+      font-size: clamp(26px, 3vw, 44px);
+      letter-spacing: 0.06em;
+    }
 
-        .carousel-btn.next {
-            right: 20px;
-        }
+    .page-sub {
+      margin: 0;
+      color: var(--muted);
+      max-width: 60ch;
+    }
 
-        .carousel-dots {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
+    .page-split {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 28px;
+      align-items: center;
+    }
 
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #333;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+    .cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
 
-        .dot.active {
-            background: #fff;
-        }
+    .btn {
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      color: var(--fg);
+      transition: all 180ms ease;
+      font-size: 13px;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
 
-        .services {
-            max-width: 900px;
-            margin: 50px auto;
-            padding: 0 20px;
-        }
+    .btn:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 16px rgba(0,255,208,0.2);
+    }
 
-        .service-item {
-            background: #1a1a1a;
-            padding: 25px 30px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.3s, background 0.3s;
-        }
+    .terminal {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 28px 60px var(--shadow);
+      overflow: hidden;
+    }
 
-        .service-item:hover {
-            background: #222;
-            transform: translateX(10px);
-        }
+    .terminal::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.03) 40%, transparent 80%);
+      pointer-events: none;
+    }
 
-        .service-name {
-            font-size: 18px;
-            flex: 1;
-        }
+    .terminal-header {
+      display: flex;
+      gap: 6px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-2);
+    }
 
-        .service-price {
-            font-size: 22px;
-            font-weight: bold;
-            color: #4ade80;
-        }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #2b2b2b;
+    }
 
-        footer {
-            background: #000;
-            padding: 60px 20px 30px;
-            margin-top: 100px;
-            border-top: 1px solid #222;
-        }
+    .dot:nth-child(1) { background: #ff5f56; }
+    .dot:nth-child(2) { background: #ffbd2e; }
+    .dot:nth-child(3) { background: #27c93f; }
 
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-bottom: 30px;
-        }
+    .terminal-body {
+      padding: 18px 18px 20px;
+      color: var(--fg);
+      font-size: 13px;
+    }
 
-        .social-links a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: color 0.3s;
-        }
+    .terminal-line {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
 
-        .social-links a:hover {
-            color: #4ade80;
-        }
+    .terminal-prompt { color: var(--accent); }
+    .terminal-out { color: var(--muted); }
 
-        .footer-text {
-            text-align: center;
-            color: #666;
-            font-size: 14px;
-        }
+    .grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
 
-        .tech-stack {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            max-width: 900px;
-            margin: 50px auto;
-            padding: 0 20px;
-        }
+    .board {
+      background: linear-gradient(160deg, rgba(255,255,255,0.04), transparent 70%);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+      display: grid;
+      gap: 12px;
+    }
 
-        .tech-item {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-            padding: 20px 40px;
-            border-radius: 12px;
-            font-size: 20px;
-            font-weight: 600;
-            border: 2px solid #333;
-            transition: all 0.3s;
-            cursor: default;
-        }
+    .board:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0,255,208,0.5);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.35);
+    }
 
-        .tech-item:hover {
-            border-color: #4ade80;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.2);
-        }
+    .board h3 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: 0.06em;
+    }
 
-        @media (max-width: 768px) {
-            .carousel-image {
-                height: 250px;
-            }
+    .board p {
+      margin: 0;
+      color: var(--muted);
+    }
 
-            .service-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
 
-            .social-links {
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
-            }
-        }
-    </style>
+    .metric {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .metric-value { font-size: 18px; letter-spacing: 0.05em; }
+
+    .contact-form {
+      display: grid;
+      gap: 12px;
+      max-width: 520px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .field input,
+    .field textarea {
+      background: #050505;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--fg);
+      padding: 12px;
+      font-family: inherit;
+    }
+
+    .field textarea { min-height: 120px; resize: vertical; }
+
+    .pdf-board {
+      display: grid;
+      gap: 12px;
+    }
+
+    .pdf-toolbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .pdf-toolbar span {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .pdf-frame {
+      width: 100%;
+      height: 420px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #0a0a0a;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 32px 0 42px;
+    }
+
+    .footer-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    .footer-links a:hover {
+      color: var(--fg);
+      border-color: var(--accent);
+    }
+
+    .copyright {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 900px) {
+      .page-split {
+        grid-template-columns: 1fr;
+      }
+      .nav {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        justify-content: flex-start;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <span class="brand-badge" aria-hidden="true"></span>
+        <span>HUKE</span>
+      </div>
+      <nav class="nav-links" aria-label="Boards">
+        <button type="button" data-page="home" aria-current="true">Home</button>
+        <button type="button" data-page="servicos">Serviços</button>
+        <button type="button" data-page="comunidade">Comunidade</button>
+        <button type="button" data-page="contato">Contato</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="page-root" class="page" aria-live="polite"></section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <strong>HUKE</strong>
+        <div class="copyright">© 2026 HUKE. Todos os direitos reservados.</div>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/company/huke-corp" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="https://wa.me/5511993019996" target="_blank" rel="noreferrer">WhatsApp</a>
+        <a href="https://instagram.com/hukecorp" target="_blank" rel="noreferrer">Instagram</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const navButtons = document.querySelectorAll(".nav-links button");
+    const pageRoot = document.getElementById("page-root");
+
+    const pages = {
+      home: () => `
+        <div class="container page-split">
+          <div>
+            <div class="page-head">
+              <div class="page-eyebrow">Operação</div>
+              <h1 class="page-title">Controle, foco e execução.</h1>
+              <p class="page-sub">A HUKE entrega sistemas, firmware e identidade digital com clareza operacional. Cada board é um módulo, cada clique muda o contexto.</p>
+            </div>
+            <div class="cta">
+              <button class="btn" data-page="servicos" type="button">Ver serviços</button>
+              <button class="btn" data-page="contato" type="button">Abrir contato</button>
+            </div>
+            <div class="metrics" aria-hidden="true">
+              <div class="metric">
+                <div class="metric-label">SLA</div>
+                <div class="metric-value">&lt; 24H</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Uptime</div>
+                <div class="metric-value">99.9%</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Cobertura</div>
+                <div class="metric-value">Global</div>
+              </div>
+            </div>
+          </div>
+          <div class="terminal" role="presentation">
+            <div class="terminal-header">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+            <div class="terminal-body" aria-hidden="true">
+              <div class="terminal-line"><span class="terminal-prompt">huke@ops</span><span>:</span><span>~</span><span>$</span><span>status --board</span></div>
+              <div class="terminal-line terminal-out">home: ativo | serviços: pronto | comunidade: sinal limpo</div>
+              <div class="terminal-line"><span class="terminal-prompt">huke@ops</span><span>:</span><span>~</span><span>$</span><span>next --action</span></div>
+              <div class="terminal-line terminal-out">Selecione um board para avançar.</div>
+            </div>
+          </div>
+        </div>
+        <div class="container" style="margin-top: 32px;">
+          <div class="page-head">
+            <div class="page-eyebrow">Conheça-nos</div>
+            <h2 class="page-title">Apresentação institucional</h2>
+            <p class="page-sub">Navegue pelas páginas do PDF diretamente no site.</p>
+          </div>
+          <div class="board pdf-board">
+            <div class="pdf-toolbar">
+              <button class="btn" type="button" data-pdf-action="prev">Anterior</button>
+              <button class="btn" type="button" data-pdf-action="next">Próximo</button>
+              <span>Página <strong id="pdf-page">1</strong> / <strong id="pdf-total">8</strong></span>
+            </div>
+            <iframe class="pdf-frame" id="pdf-frame" title="Apresentação HUKE" src="./HUKE%20CORP%202k26%20(1).pdf#page=1&view=fitH"></iframe>
+          </div>
+        </div>
+      `,
+      servicos: () => `
         <div class="container">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial Black, sans-serif' font-size='80' font-weight='900' fill='white' font-style='italic'%3EHUKE%3C/text%3E%3C/svg%3E" alt="HUKE" class="logo">
+          <div class="page-head">
+            <div class="page-eyebrow">Serviços</div>
+            <h1 class="page-title">Soluções sob medida.</h1>
+            <p class="page-sub">Da estratégia ao deploy, entregamos módulos claros e verificáveis para operação contínua.</p>
+          </div>
+          <div class="grid">
+            <article class="board">
+              <img src="./erp.png" alt="Sistema de Gestão Empresarial" />
+              <h3>Desenvolvimento de sistemas</h3>
+              <p>Arquitetura, integrações e painéis de controle para operação diária com precisão.</p>
+            </article>
+            <article class="board">
+              <img src="./grow.png" alt="Grow Automático" />
+              <h3>Firmware + Hardware</h3>
+              <p>IoT, sensores e controle embarcado com telemetria e segurança operacional.</p>
+            </article>
+            <article class="board">
+              <img src="./uraatendimento.png" alt="URA de Atendimento" />
+              <h3>UX e Front-end</h3>
+              <p>Interfaces terminais e dashboards com foco em legibilidade e decisões rápidas.</p>
+            </article>
+            <article class="board">
+              <img src="./identidadevisual.png" alt="Identidade Visual" />
+              <h3>Identidade visual</h3>
+              <p>Marca, sistema gráfico e kits visuais para startups e unidades corporativas.</p>
+            </article>
+          </div>
         </div>
-    </header>
-
-    <main class="container">
-        <h2>Nossos Projetos</h2>
-        
-        <div class="carousel">
-            <button class="carousel-btn prev" onclick="moveCarousel(-1)">‹</button>
-            <button class="carousel-btn next" onclick="moveCarousel(1)">›</button>
-            
-            <div class="carousel-container" id="carouselContainer">
-                <div class="carousel-item">
-                    <div class="carousel-image">
-                        <img src="./erp.png" alt="Sistema de Gestão Empresarial">
-                    </div>
-                    <div class="carousel-content">
-                        <h3>Sistema de Gestão Empresarial</h3>
-                        <p>Desenvolvimento completo de ERP customizado para indústria, incluindo módulos de estoque, vendas e financeiro.</p>
-                    </div>
-                </div>
-                
-                <div class="carousel-item">
-                    <div class="carousel-image">
-                        <img src="./grow.png" alt="Grow Automático">
-                    </div>
-                    <div class="carousel-content">
-                        <h3>Grow Automático com Webserver e Aplicativo Mobile</h3>
-                        <p>Sistema com integração hardware e firmware para monitoramento em tempo real de equipamentos de cultivo indoor.</p>
-                    </div>
-                </div>
-                
-                <div class="carousel-item">
-                    <div class="carousel-image">
-                        <img src="./uraatendimento.png" alt="URA de Atendimento">
-                    </div>
-                    <div class="carousel-content">
-                        <h3>URA de Atendimento Automático para Operador</h3>
-                        <p>Robô URA com servidor Asterisk para números VoIP que ligam para uma lista de clientes e repassa a linha para operador.</p>
-                    </div>
-                </div>
-                
-                <div class="carousel-item">
-                    <div class="carousel-image">
-                        <img src="./identidadevisual.png" alt="Identidade Visual">
-                    </div>
-                    <div class="carousel-content">
-                        <h3>Identidade Visual Tech Startup</h3>
-                        <p>Criação completa de marca, logo, paleta de cores e materiais gráficos para startup de tecnologia.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="carousel-dots" id="carouselDots"></div>
+      `,
+      comunidade: () => `
+        <div class="container">
+          <div class="page-head">
+            <div class="page-eyebrow">Comunidade</div>
+            <h1 class="page-title">Sinal limpo, troca real.</h1>
+            <p class="page-sub">Conexão direta com builders, operação técnica e conteúdo objetivo para evolução constante.</p>
+          </div>
+          <div class="grid">
+            <article class="board">
+              <h3>Briefings semanais</h3>
+              <p>Atualizações rápidas sobre projetos ativos, decisões e aprendizados operacionais.</p>
+            </article>
+            <article class="board">
+              <h3>Laboratório aberto</h3>
+              <p>Experimentação de hardware, automações e pipelines com feedback em tempo real.</p>
+            </article>
+            <article class="board">
+              <h3>Base de conhecimento</h3>
+              <p>Documentação viva, templates e playbooks para repetir o que funciona.</p>
+            </article>
+          </div>
         </div>
-
-        <h2>Tecnologias</h2>
-        
-        <div class="tech-stack">
-            <div class="tech-item">Assembly</div>
-            <div class="tech-item">C</div>
-            <div class="tech-item">C++</div>
-            <div class="tech-item">C#</div>
+      `,
+      contato: () => `
+        <div class="container">
+          <div class="page-head">
+            <div class="page-eyebrow">Contato</div>
+            <h1 class="page-title">Envie o sinal.</h1>
+            <p class="page-sub">Explique o objetivo, contexto e prazo. Retorno direto com próximos passos.</p>
+          </div>
+          <div class="grid">
+            <article class="board">
+              <h3>Canais diretos</h3>
+              <p>contact@huke.corp</p>
+              <p>ops@huke.corp</p>
+              <p>media@huke.corp</p>
+            </article>
+            <form class="contact-form" id="contact-form" autocomplete="off">
+              <label class="field">
+                Nome
+                <input type="text" name="name" placeholder="Seu nome" required />
+              </label>
+              <label class="field">
+                Email
+                <input type="email" name="email" placeholder="voce@empresa.com" required />
+              </label>
+              <label class="field">
+                Mensagem
+                <textarea name="message" placeholder="Objetivo, prazo e requisitos." required></textarea>
+              </label>
+              <button class="btn" type="submit">Enviar</button>
+              <div id="form-status" class="terminal-out" role="status" aria-live="polite"></div>
+            </form>
+          </div>
         </div>
+      `
+    };
 
-        <h2>Serviços</h2>
-        
-        <div class="services">
-            <div class="service-item">
-                <div class="service-name">Desenvolvimento e implementação de sistema básico</div>
-                <div class="service-price">R$ 1.000,00</div>
-            </div>
-            
-            <div class="service-item">
-                <div class="service-name">Desenvolvimento e implementação de sistema complexo</div>
-                <div class="service-price">R$ 3.000,00</div>
-            </div>
-            
-            <div class="service-item">
-                <div class="service-name">Desenvolvimento e implementação de sistema com firmware e hardware</div>
-                <div class="service-price">R$ 5.000,00</div>
-            </div>
-            
-            <div class="service-item">
-                <div class="service-name">Criação de UX/UI e Front-end</div>
-                <div class="service-price">R$ 1.000,00</div>
-            </div>
-            
-            <div class="service-item">
-                <div class="service-name">Criação de kit de identidade visual completa</div>
-                <div class="service-price">R$ 1.000,00</div>
-            </div>
-        </div>
-    </main>
+    const setupPdfBoard = () => {
+      const frame = document.getElementById("pdf-frame");
+      const pageLabel = document.getElementById("pdf-page");
+      const totalLabel = document.getElementById("pdf-total");
+      if (!frame || !pageLabel || !totalLabel) return;
 
-    <footer>
-        <div class="social-links">
-            <a href="https://www.linkedin.com/company/huke-corp" target="_blank">
-                <span>🔗</span> LinkedIn
-            </a>
-            <a href="https://wa.me/5511993019996" target="_blank">
-                <span>💬</span> WhatsApp
-            </a>
-            <a href="https://instagram.com/hukecorp" target="_blank">
-                <span>📷</span> Instagram
-            </a>
-        </div>
-        <p class="footer-text">© 2026 HUKE. Todos os direitos reservados.</p>
-    </footer>
+      let currentPage = 1;
+      const totalPages = parseInt(totalLabel.textContent, 10) || 1;
 
-    <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.carousel-item');
-        const container = document.getElementById('carouselContainer');
-        const dotsContainer = document.getElementById('carouselDots');
+      const updateFrame = () => {
+        const pdfUrl = "./HUKE%20CORP%202k26%20(1).pdf#page=" + currentPage + "&view=fitH";
+        frame.setAttribute("src", pdfUrl);
+        pageLabel.textContent = String(currentPage);
+      };
 
-        slides.forEach((_, i) => {
-            const dot = document.createElement('div');
-            dot.className = 'dot';
-            if (i === 0) dot.classList.add('active');
-            dot.onclick = () => goToSlide(i);
-            dotsContainer.appendChild(dot);
+      document.querySelectorAll("[data-pdf-action]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const action = btn.getAttribute("data-pdf-action");
+          if (action === "prev") currentPage = Math.max(1, currentPage - 1);
+          if (action === "next") currentPage = Math.min(totalPages, currentPage + 1);
+          updateFrame();
         });
+      });
 
-        function updateCarousel() {
-            container.style.transform = `translateX(-${currentSlide * 100}%)`;
-            document.querySelectorAll('.dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentSlide);
-            });
-        }
+      updateFrame();
+    };
 
-        function moveCarousel(direction) {
-            currentSlide += direction;
-            if (currentSlide < 0) currentSlide = slides.length - 1;
-            if (currentSlide >= slides.length) currentSlide = 0;
-            updateCarousel();
-        }
+    const renderPage = (page) => {
+      const safePage = pages[page] ? page : "home";
+      pageRoot.innerHTML = pages[safePage]();
+      navButtons.forEach((btn) => {
+        const isActive = btn.dataset.page === safePage;
+        btn.setAttribute("aria-current", isActive ? "true" : "false");
+      });
 
-        function goToSlide(index) {
-            currentSlide = index;
-            updateCarousel();
-        }
+      const contactForm = document.getElementById("contact-form");
+      if (contactForm) {
+        const status = document.getElementById("form-status");
+        contactForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const formData = new FormData(contactForm);
+          const name = formData.get("name") || "operador";
+          status.textContent = "Sinal recebido, " + name + ". Retornaremos em breve.";
+          contactForm.reset();
+        });
+      }
 
-        setInterval(() => moveCarousel(1), 5000);
-    </script>
+      setupPdfBoard();
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    navButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        renderPage(btn.dataset.page);
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      const target = event.target;
+      if (target instanceof HTMLElement && target.dataset.page) {
+        renderPage(target.dataset.page);
+      }
+    });
+
+    renderPage("home");
+  </script>
 </body>
 </html>
